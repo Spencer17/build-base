@@ -1,0 +1,48 @@
+apiVersion: build.openshift.io/v1
+kind: BuildConfig
+metadata:
+  annotations:
+    openshift.io/generated-by: OpenShiftWebConsole
+  creationTimestamp: '2019-02-12T18:06:14Z'
+  labels:
+    app: demo
+  name: demo
+  namespace: cicd
+  resourceVersion: '6028968'
+  selfLink: /apis/build.openshift.io/v1/namespaces/cicd/buildconfigs/demo
+  uid: e2c4b9c9-2ef0-11e9-8687-005056a84842
+spec:
+  nodeSelector: null
+  output:
+    to:
+      kind: ImageStreamTag
+      name: 'hola:latest'
+  postCommit: {}
+  resources: {}
+  runPolicy: Serial
+  source:
+    git:
+      ref: master
+      uri: 'https://github.com/redhat-helloworld-msa/ola.git'
+    type: Git
+  strategy:
+    sourceStrategy:
+      from:
+        kind: ImageStreamTag
+        name: 'java:8'
+        namespace: openshift
+    type: Source
+  triggers:
+    - imageChange:
+        lastTriggeredImageID: >-
+          docker-registry.default.svc:5000/openshift/java@sha256:78af15475eac13d2ff439b33a9c3bdd39147858a824c420e8042fd5f35adce15
+      type: ImageChange
+    - type: ConfigChange
+    - generic:
+        secret: 2a568934f3a8160c
+      type: Generic
+    - github:
+        secret: 11447705adeb2e15
+      type: GitHub
+status:
+  lastVersion: 6
